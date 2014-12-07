@@ -54,5 +54,6 @@ docs/_build/
 target/
 
 # Users
+test/
 libimobiledevice
 keychain-2.db
