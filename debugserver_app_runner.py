@@ -34,6 +34,8 @@ def debugserver_run_app(app_bin_path):
 	response = debugserver.set_argv(1, [app_bin_path])
 	print "Setting argv: %s" % response
 
+	# If return "Efailed to get the task for process XXX",
+	# 	add "get-task-allow = True" in entitlements.plist
 	with DebugServerCommand("qLaunchSuccess") as cmd:
 		print "Checking if launch succeeded: %s" % debugserver.send_command(cmd)
 
