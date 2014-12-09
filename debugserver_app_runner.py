@@ -15,6 +15,31 @@ def lockdown_get_service_client(service_class):
 	ld = LockdownClient(iDevice())
 	return ld.get_service_client(service_class)
 
+def debugserver_client_handle_response(debugserver, response, reply=False):
+    if not response:
+        result = None
+    elif len(response) == 0:    # no data
+        result = None
+    elif response == "OK":      # Success
+        result = response
+    elif response[0] == 'O':    # stdout/stderr
+        result = debugserver.decode_string(response[1:])
+    elif response[0] == 'T':    # thread stopped information
+        result = "Thread stopped. Details:\n%s\n" % response[1:]
+    elif response[0] == 'E':    # Error
+        result = "ERROR: %s\n" % response[1:]
+    elif response[0] == 'W':    # Warnning
+        result = "WARNING: %s\n" % response[1:]
+    else:
+        result = "Unknown: %s" % response
+    
+    if not reply:
+        return result
+
+    with DebugServerCommand("OK") as reply_ok:
+        response = debugserver.send_command(reply_ok)
+        return result, response
+
 def debugserver_run_app(app_bin_path):
 	app_root = os.path.dirname(app_bin_path)
 
@@ -50,7 +75,7 @@ def debugserver_run_app(app_bin_path):
 		try:
 			if (loop_response == None):
 				break
-			result, loop_response = debugserver.handle_response(loop_response, reply=True)
+			result, loop_response = debugserver_client_handle_response(debugserver, loop_response, reply=True)
 			if result:
 				sys.stdout.write(result)
 
@@ -62,7 +87,7 @@ def debugserver_run_app(app_bin_path):
 
 	with DebugServerCommand("k") as cmd:
 		response = debugserver.send_command(cmd)
-		print "Killing process: %s" % debugserver.handle_response(response)
+		print "Killing process: %s" % debugserver_client_handle_response(debugserver, response)
 
 def main():
 	instproxy = lockdown_get_service_client(InstallationProxyClient)
