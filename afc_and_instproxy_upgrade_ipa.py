@@ -34,13 +34,22 @@ def instproxy_install_file(filename):
 	# upgrade if IPA exist
 	instproxy.upgrade(filename, plist.Dict({}))
 
-	# dump application info
-	#client_options = plist.Dict({
-	#	"ApplicationType": "User",		# Any, System, User
-	#})
-	#for app in instproxy.browse(client_options):
-	#	print "[CFBundleIdentifier] %s" % app["CFBundleIdentifier"]
-	#	print "[EnvironmentVariables] %s" % app["EnvironmentVariables"]
+# Any, System, User
+def instproxy_browse_applist(app_type="Any"):
+	instproxy = lockdown_get_service_client(InstallationProxyClient)
+
+	client_options = plist.Dict({
+		"ApplicationType": app_type,
+		"ReturnAttributes": plist.Array([
+			"CFBundleIdentifier",
+			"CFBundleExecutable",
+			"Container",
+		]),
+	})
+
+	result_list = instproxy.browse(client_options)
+	for app in result_list:
+		print app
 
 def cleanup(path):
 	afc = lockdown_get_service_client(AfcClient)
@@ -55,6 +64,9 @@ def main():
 	#print ">>> Download IPA..."
 	#import urllib2
 	#payload_stream = urllib2.urlopen("http://blog.imaou.com/RankingLog/RankingLog_v1.3.ipa")
+
+	# list app installed in iOS
+	#instproxy_browse_applist("User")
 
 	# Install start here
 	WORK_PATH = "/IPATemp"		# /private/var/mobile/Media/IPATemp
