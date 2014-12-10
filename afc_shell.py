@@ -17,13 +17,15 @@ class CommandShell(cmd.Cmd):
 	_path = None
 	_dirs = []
 
-	def __init__(self, root=False):
+	def __init__(self, root=True):
 		cmd.Cmd.__init__(self)
-		self._set_path("/")
 		if root:
 			self.afc = lockdown_get_service_client(Afc2Client)
 		else:
 			self.afc = lockdown_get_service_client(AfcClient)
+
+		self._set_path("/")
+		self._dirs = self.afc.read_directory("/")
 
 	def _set_path(self, path):
 		if (path[-1] == '/'):
@@ -164,7 +166,7 @@ class CommandShell(cmd.Cmd):
 	do_q = do_quit
 
 def main():
-	shell = CommandShell(root=True)
+	shell = CommandShell()
 	shell.cmdloop()
 
 if __name__ == '__main__':
