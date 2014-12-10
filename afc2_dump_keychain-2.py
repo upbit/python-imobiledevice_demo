@@ -27,7 +27,7 @@ def afc2_dump_keychain2():
 
 def main():
 	afc2_dump_keychain2()
-	print ">>> done"
+	print ">>> write keychain-2.db to local, done"
 
 if __name__ == '__main__':
 	main()
