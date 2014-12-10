@@ -37,17 +37,17 @@ Setting argv: OK
 Checking if launch succeeded: None
 Setting thread: OK
 Traceback (most recent call last):
-File "debugserver_app_runner.py", line 98, in <module>
-main()
-File "debugserver_app_runner.py", line 95, in main
-debugserver_run_app(bin_path)
-File "debugserver_app_runner.py", line 89, in debugserver_run_app
-response = debugserver.send_command(cmd)
-File "debugserver.pxi", line 116, in imobiledevice.DebugServerClient.send_command (imobiledevice.c:44176)
-File "debugserver.pxi", line 129, in imobiledevice.DebugServerClient.send_command (imobiledevice.c:44051)
-File "debugserver.pxi", line 122, in imobiledevice.DebugServerClient.send_command (imobiledevice.c:43964)
-File "imobiledevice.pyx", line 30, in imobiledevice.Base.handle_error (imobiledevice.c:4814)
-imobiledevice.DebugServerError: Unknown error (-256)
+  File "debugserver_app_runner.py", line 98, in <module>
+    main()
+  File "debugserver_app_runner.py", line 95, in main
+    debugserver_run_app(bin_path)
+  File "debugserver_app_runner.py", line 89, in debugserver_run_app
+    response = debugserver.send_command(cmd)
+  File "debugserver.pxi", line 116, in imobiledevice.DebugServerClient.send_command (imobiledevice.c:44176)
+  File "debugserver.pxi", line 129, in imobiledevice.DebugServerClient.send_command (imobiledevice.c:44051)
+  File "debugserver.pxi", line 122, in imobiledevice.DebugServerClient.send_command (imobiledevice.c:43964)
+  File "imobiledevice.pyx", line 30, in imobiledevice.Base.handle_error (imobiledevice.c:4814)
+    imobiledevice.DebugServerError: Unknown error (-256)
 
 # just run script again...
 $ python debugserver_app_runner.py
